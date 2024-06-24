@@ -1,14 +1,22 @@
-import { Component } from '@angular/core';
+import { Component, DoBootstrap, Injector } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { NxWelcomeComponent } from './nx-welcome.component';
+import { createCustomElement } from '@angular/elements';
+import { ButtonComponent } from './button.component';
 
 @Component({
   standalone: true,
-  imports: [NxWelcomeComponent, RouterModule],
+  imports: [RouterModule],
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
-export class AppComponent {
-  title = 'web-components-test-webpack';
+export class AppComponent implements DoBootstrap {
+  title = 'web-components-test';
+  constructor(private injector: Injector) {}
+  ngDoBootstrap() {
+    const el = createCustomElement(ButtonComponent, {
+      injector: this.injector,
+    });
+    customElements.define('test-test', el);
+  }
 }
